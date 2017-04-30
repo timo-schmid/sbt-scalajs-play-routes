@@ -1,0 +1,6 @@
+GET         /                                   xyz._0x7e.Blog.index()
+GET         /user/:identity/:id                 xyz._0x7e.User.profile(id: Int, identity: String)
+GET         /posts                              xyz._0x7e.Blog.posts()
+GET         /posts/:id                          xyz._0x7e.Blog.post(id: Int)
+GET         /documentation/:version/:name       xyz._0x7e.Documentation.page(version: String, page: String)
+GET         /about                              xyz._0x7e.About.about(page: String)
