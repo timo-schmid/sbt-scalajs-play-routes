@@ -1,6 +1,24 @@
+#
+# The routes for testing
+#
+
+# The simple / route
 GET         /                                   xyz._0x7e.Blog.index()
-GET         /user/:identity/:id                 xyz._0x7e.User.profile(id: Int, identity: String)
+# A GET request with a path
 GET         /posts                              xyz._0x7e.Blog.posts()
+# An argument
+GET         /posts                              xyz._0x7e.Blog.defaultParam(userId: Int ?= 1)
+# A POST request
+POST        /posts                              xyz._0x7e.Blog.addPost()
+# A GET request with a parameter
 GET         /posts/:id                          xyz._0x7e.Blog.post(id: Int)
-GET         /documentation/:version/:name       xyz._0x7e.Documentation.page(version: String, page: String)
-GET         /about                              xyz._0x7e.About.about(page: String)
+# A PUT request
+PUT         /posts/:id                          xyz._0x7e.Blog.editPost(id: Int)
+# A DELETE request
+DELETE      /posts/:id                          xyz._0x7e.Blog.deletePost(id: Int)
+# A GET request with a variable
+GET         /posts/$id/comments                 xyz._0x7e.Blog.comments(id: Int)
+# A GET request with a fixed parameter
+GET         /albums                             xyz._0x7e.Website.page(page: String = "foobar")
+# A GET request with a fixed parameter
+GET         /*page                              xyz._0x7e.Website.page(page: String)

@@ -36,6 +36,7 @@ class ScalajsRoutesWriter(targetDir: File, prefix: String, log: Logger) {
          |import fr.hmil.roshttp.HttpRequest
          |import fr.hmil.roshttp.response.SimpleHttpResponse
          |import fr.hmil.roshttp.Method._
+         |import java.util.regex.Pattern
          |import monix.execution.Scheduler.Implicits.global
          |import scala.concurrent.Future
          |
@@ -50,9 +51,16 @@ class ScalajsRoutesWriter(targetDir: File, prefix: String, log: Logger) {
          |  private def addUrlParam(request: HttpRequest, param: (String, String)): HttpRequest =
          |    request.withQueryParameter(param._1, param._2)
          |
+         |  private def replaceAll(search: String, replace: String, haystack: String): String =
+         |    haystack.split(Pattern.quote(search), -1).mkString(replace)
+         |
          |  private def foldParam(acc: (String, Map[String, String]), param: (String, String)): (String, Map[String, String]) =
          |    if(acc._1.contains(s":$${param._1}"))
-         |      (acc._1.replaceAll(s":$${param._1}", s"$${param._2}"), acc._2)
+         |      (replaceAll(s":$${param._1}", s"$${param._2}", acc._1), acc._2)
+         |    else if(acc._1.contains(s"*$${param._1}"))
+         |      (replaceAll(s"*$${param._1}", s"$${param._2}", acc._1), acc._2)
+         |    else if(acc._1.contains(s"$$$$$${param._1}"))
+         |      (replaceAll(s"$$$$$${param._1}", s"$${param._2}", acc._1), acc._2)
          |    else
          |      (acc._1, acc._2 + param)
          |
@@ -139,13 +147,13 @@ class ScalajsRoutesWriter(targetDir: File, prefix: String, log: Logger) {
        |              .toSeq
        |              .sortBy(_._1.length)
        |              .reverse
-       |              .foldLeft((s"${basicUrl(overload)}", Map[String, String]()))(foldParam)
+       |              .foldLeft(("${basicUrl(overload)}", Map[String, String]()))(foldParam)
        |
        |          ${toRequest(overload.method)} """.stripMargin
 
   private def toRequest(method: String): String =
     s"""   urlAndParams._2
-       |              .foldLeft(httpRequest.withMethod(GET).withPath(urlAndParams._1))(addUrlParam)
+       |              .foldLeft(httpRequest.withMethod(${method.toUpperCase}).withPath(urlAndParams._1))(addUrlParam)
        |              .send()
      """.stripMargin
 
@@ -162,6 +170,7 @@ class ScalajsRoutesWriter(targetDir: File, prefix: String, log: Logger) {
   private def replaceParams(overload: RouteMethod): String =
     overload
       .params
+      .filterNot(_.value.isFixed)
       .map(toReplaceParam)
       .mkString(",\n")
 
@@ -171,7 +180,6 @@ class ScalajsRoutesWriter(targetDir: File, prefix: String, log: Logger) {
   private def paramDefault(param: RouterParam): String =
     param.value match {
       case DefaultParam(value) => s" = $value"
-      case FixedParam(value) => " /* FIXED */"
       case _ => ""
     }
 

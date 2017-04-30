@@ -22,7 +22,7 @@ final case class RoutesEntry(method: String, pathSegment: String, action: String
 
   private val RE_PARAM_VALUE_FIXED = "^[^=]*=(.*)".r
 
-  private val RE_PARAM_VALUE_DEFAUlT = "^[^=]*\\?=(.*)".r
+  private val RE_PARAM_VALUE_DEFAULT = "^[^=]*\\?=(.*)".r
 
   def actionWithoutParams: Option[String] =
     action match {
@@ -92,7 +92,7 @@ final case class RoutesEntry(method: String, pathSegment: String, action: String
 
   private def paramValue(param: String): ParamValue = {
     param.trim match {
-      case RE_PARAM_VALUE_DEFAUlT(value) => DefaultParam(value.trim)
+      case RE_PARAM_VALUE_DEFAULT(value) => DefaultParam(value.trim)
       case RE_PARAM_VALUE_FIXED(value) => FixedParam(value.trim)
       case _ => NoValue
     }
