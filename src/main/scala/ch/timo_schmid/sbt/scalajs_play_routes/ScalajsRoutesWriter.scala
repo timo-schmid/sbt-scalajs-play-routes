@@ -1,4 +1,4 @@
-package xyz._0x7e.sbt.sjs_play_routes
+package ch.timo_schmid.sbt.scalajs_play_routes
 
 import sbt.{Logger, _}
 
@@ -14,7 +14,7 @@ class ScalajsRoutesWriter(targetDir: File, prefix: String, log: Logger) {
 
   private lazy val prefixSafe = if(prefix.isEmpty) "" else if(prefix.endsWith(".")) prefix else s"$prefix."
 
-  def writeRoutes(routes: Map[String, PackageContents]): Seq[File] =
+  private [scalajs_play_routes] def writeRoutes(routes: Map[String, PackageContents]): Seq[File] =
     routes
       .toSeq
       .flatMap(pkg => writePackage(pkg._1, pkg._2))

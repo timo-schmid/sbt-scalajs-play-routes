@@ -1,4 +1,4 @@
-package xyz._0x7e.sbt.sjs_play_routes
+package ch.timo_schmid.sbt.scalajs_play_routes
 
 import sbt._
 
@@ -12,7 +12,7 @@ class PlayRoutesReader(log: Logger) {
 
   type PackageContents = Map[String, ControllerContents]
 
-  private [sjs_play_routes] def makeRoutes(routesFile: File): Map[String, PackageContents] = {
+  private [scalajs_play_routes] def makeRoutes(routesFile: File): Map[String, PackageContents] = {
     val allRoutes = groupRoutes(getRoutesEntries(routesFile))
     val routes = allRoutes.values.map(_.values.map(_.values.map(_.size).sum).sum).sum
     val actions = allRoutes.values.map(_.values.map(_.size).sum).sum

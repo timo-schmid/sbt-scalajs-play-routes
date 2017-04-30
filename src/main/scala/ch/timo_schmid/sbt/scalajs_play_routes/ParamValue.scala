@@ -1,4 +1,4 @@
-package xyz._0x7e.sbt.sjs_play_routes
+package ch.timo_schmid.sbt.scalajs_play_routes
 
 sealed trait ParamValue {
   def isDefault: Boolean

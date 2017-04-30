@@ -1,9 +1,9 @@
-package xyz._0x7e.sbt.sjs_play_routes
+package ch.timo_schmid.sbt.scalajs_play_routes
 
-import sbt._
+import org.scalajs.sbtplugin.ScalaJSPlugin
 import sbt.Def.Setting
 import sbt.Keys.{libraryDependencies, sourceGenerators, sourceManaged, streams}
-import org.scalajs.sbtplugin.ScalaJSPlugin
+import sbt._
 
 /**
  * Generates the routes for the client side of the project
@@ -23,8 +23,8 @@ object ScalajsPlayRoutes extends AutoPlugin {
 
   }
 
-  import autoImport._
   import ScalaJSPlugin.autoImport._
+  import autoImport._
 
   override def requires: Plugins = ScalaJSPlugin
 

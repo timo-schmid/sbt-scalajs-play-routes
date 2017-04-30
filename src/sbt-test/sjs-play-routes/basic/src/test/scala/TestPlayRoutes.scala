@@ -6,7 +6,8 @@ import fr.hmil.roshttp.Protocol.HTTPS
 import fr.hmil.roshttp.response.SimpleHttpResponse
 import fr.hmil.roshttp.exceptions.HttpException
 
-import scalajs.concurrent.JSExecutionContext.Implicits.runNow
+import scalajs.concurrent.JSExecutionContext.Implicits.queue
+// import scalajs.concurrent.JSExecutionContext.Implicits.runNow
 
 import routes.xyz._0x7e.{Blog, Website}
 
